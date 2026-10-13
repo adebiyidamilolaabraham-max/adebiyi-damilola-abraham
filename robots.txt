@@ -1,0 +1,6 @@
+# Robots.txt for Adebiyi Damilola Abraham Psychologist, Consultant &amp; Speaker
+
+User-agent: *
+Allow: /
+
+Sitemap: https://adebiyi-damilola-a.vercel.app/sitemap.xml
