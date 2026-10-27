@@ -509,6 +509,11 @@
       }
     }
   </style>
+  <!-- PWA Manifest --><link rel="manifest" href="/manifest.json"><!-- Theme Color --><meta name="theme-color" content="#0066cc"><!-- Mobile App Support --><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Damilola Portfolio"><!-- App Icons --><link rel="icon" type="image/png" href="/logos.png">
+<link rel="apple-touch-icon" href="/logos.png">
 </head>
 
 <body>
@@ -1034,6 +1039,62 @@
 
       yearElement.textContent = new Date().getFullYear();
     })();
+  </script>
+
+  <script>
+  let deferredPrompt;
+
+  // Register the service worker
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then(() => console.log("Service worker registered successfully."))
+        .catch(error => console.error("Service worker error:", error));
+    });
+  }
+
+  // Listen for the installation prompt
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+
+    const button = document.getElementById("installApp");
+
+    if (button) {
+      button.hidden = false;
+    }
+  });
+
+  // Install the web app
+  async function installPWA() {
+    if (!deferredPrompt) {
+      alert("Open your browser menu and look for 'Install app' or 'Add to Home screen'.");
+      return;
+    }
+
+    deferredPrompt.prompt();
+
+    const result = await deferredPrompt.userChoice;
+
+    console.log("Installation result:", result.outcome);
+
+    deferredPrompt = null;
+
+    const button = document.getElementById("installApp");
+
+    if (button) {
+      button.hidden = true;
+    }
+  }
+
+  // Hide the button when installation succeeds
+  window.addEventListener("appinstalled", () => {
+    const button = document.getElementById("installApp");
+
+    if (button) {
+      button.hidden = true;
+    }
+  });
   </script>
 </body>
 </html>
